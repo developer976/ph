@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testing Website</title>
+    <style>
+      /* Main styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #101010;
+        color: #fff;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      /* Search form */
+      .search-form {
+        display: flex;
+        align-items: center;
+      }
+
+      /* Search input */
+      .search-form input[type="text"] {
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 18px;
+        background-color: #f2f2f2;
+        width: 400px;
+        margin-right: 10px;
+      }
+
+      /* Search button */
+      .search-form button[type="submit"] {
+        border: none;
+        background-color: #ff7f50;
+        color: white;
+        font-size: 18px;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      /* Search button icon */
+      .search-form button[type="submit"] i {
+        margin-right: 10px;
+      }
+
+      /* Main content styles */
+      .main-content {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .main-content .item {
+        flex: 1 0 25%;
+        padding: 20px;
+        box-sizing: border-box;
+        background-color: #000;
+        margin-top: 10px;
+      }
+      .main-content .item img {
+        width: 100%;
+        height: auto;
+      }
+      .item h3 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 10px 0;
+      }
+      .item a {
+        color: #445;
+        text-decoration: none;
+      }
+
+      .item:hover {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        transform: translateY(-5px);
+      }
+
+      @media (max-width: 768px) {
+        .search-form input[type="text"] {
+          width: 100%;
+        }
+      }
+      @media (max-width: 768px) {
+        .main-content {
+          display: block;
+        }
+        .main-content .item {
+          flex: none;
+          width: 100%;
+        }
+      }
+      @media (max-width: 768px) {
+        body {
+          font-size: 16px;
+        }
+        .search-form input[type="text"],
+        .search-form button[type="submit"] {
+          font-size: 16px;
+          padding: 8px 16px;
+        }
+        .main-content .item h3 {
+          font-size: 20px;
+          margin-top: 10px;
+        }
+        .main-content .item a {
+          font-size: 14px;
+          margin-bottom: 10px;
+        }
+      }
+      .loader {
+        position: relative;
+        width: 2.5em;
+        height: 2.5em;
+        transform: rotate(165deg);
+      }
+
+      .loader:before,
+      .loader:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: block;
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 0.25em;
+        transform: translate(-50%, -50%);
+      }
+
+      .loader:before {
+        animation: before8 2s infinite;
+      }
+
+      .loader:after {
+        animation: after6 2s infinite;
+      }
+
+      @keyframes before8 {
+        0% {
+          width: 0.5em;
+          box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75),
+            -1em 0.5em rgba(111, 202, 220, 0.75);
+        }
+
+        35% {
+          width: 2.5em;
+          box-shadow: 0 -0.5em rgba(225, 20, 98, 0.75),
+            0 0.5em rgba(111, 202, 220, 0.75);
+        }
+
+        70% {
+          width: 0.5em;
+          box-shadow: -1em -0.5em rgba(225, 20, 98, 0.75),
+            1em 0.5em rgba(111, 202, 220, 0.75);
+        }
+
+        100% {
+          box-shadow: 1em -0.5em rgba(225, 20, 98, 0.75),
+            -1em 0.5em rgba(111, 202, 220, 0.75);
+        }
+      }
+
+      @keyframes after6 {
+        0% {
+          height: 0.5em;
+          box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75),
+            -0.5em -1em rgba(233, 169, 32, 0.75);
+        }
+
+        35% {
+          height: 2.5em;
+          box-shadow: 0.5em 0 rgba(61, 184, 143, 0.75),
+            -0.5em 0 rgba(233, 169, 32, 0.75);
+        }
+
+        70% {
+          height: 0.5em;
+          box-shadow: 0.5em -1em rgba(61, 184, 143, 0.75),
+            -0.5em 1em rgba(233, 169, 32, 0.75);
+        }
+
+        100% {
+          box-shadow: 0.5em 1em rgba(61, 184, 143, 0.75),
+            -0.5em -1em rgba(233, 169, 32, 0.75);
+        }
+      }
+
+      .loader {
+        position: absolute;
+        top: calc(50% - 1.25em);
+        left: calc(50% - 1.25em);
+      }
+      .nothing h1 {
+        /* background-color: red; */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        color: #445;
+      }
+      .widget {
+        background-image: linear-gradient(135deg, #e2b0ff 10%, #9f44d3 100%);
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 15px;
+      }
+      .widget h3 {
+        color: #000;
+      }
+      .widget a {
+        text-decoration: none;
+        color: #445;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <form class="search-form">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search..."
+            id="search-input"
+          />
+          <button type="submit" id="search-btn">Search</button>
+        </form>
+      </div>
+    </header>
+    <div class="container">
+      <div class="main-content" id="results-container">
+        <div class="nothing">
+          <h1 id="searchId">Search for a links</h1>
+        </div>
+        <div id="loader"></div>
+      </div>
+      <aside class="sidebar" id="sidebar"></aside>
+    </div>
+    <script>
+      const searchBtn = document.querySelector("#search-btn");
+      const searchInput = document.querySelector("#search-input");
+      const resultsContainer = document.querySelector("#results-container");
+      const loader = document.querySelector("#loader");
+      const sidebar = document.querySelector("#sidebar");
+      const searchId = document.querySelector("#searchId");
+      searchBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        loader.classList.add("loader");
+        searchId.innerText = "";
+        const searchQuery = searchInput.value;
+        const options = {
+          method: "GET",
+          url: "https://quality-porn.p.rapidapi.com/search",
+          params: { query: searchQuery, page: "1", timeout: "5000" },
+          headers: {
+            "X-RapidAPI-Key":
+              "678a4dbfdamsh372a2d85e63ff27p136084jsn655b2e1c891e",
+            "X-RapidAPI-Host": "quality-porn.p.rapidapi.com",
+          },
+        };
+
+        fetch(options.url + "?" + new URLSearchParams(options.params), {
+          headers: options.headers,
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            const jsonData = JSON.parse(data);
+            loader.classList.remove("loader");
+            Array.from(jsonData.data).forEach((elems) => {
+              let html = "";
+              elems.links.map((e) => {
+                html += ` <div class="item">
+                             <img src="${e.image}" alt="" />
+                             <h3>${e.added}</h3>
+                             <a href="${e.url}" target="_blank">${e.title}</a>
+                         </div>`;
+                resultsContainer.innerHTML = html;
+              });
+            });
+          })
+          .catch((error) => console.log(error));
+
+        const optionsTwo = {
+          method: "GET",
+          url: `https://porn-videos.p.rapidapi.com/videos/${searchInput.value}`,
+          headers: {
+            "X-RapidAPI-Key":
+              "678a4dbfdamsh372a2d85e63ff27p136084jsn655b2e1c891e",
+            "X-RapidAPI-Host": "porn-videos.p.rapidapi.com",
+          },
+        };
+
+        fetch(optionsTwo.url, {
+          method: optionsTwo.method,
+          headers: optionsTwo.headers,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            let html = "";
+            data.results.map((e) => {
+              html += `  <div class="widget">
+                             <h3>${e.duration}</h3>
+                             <a href="${e.videoUrl}" target="_blank">${e.title}</a>
+                          </div>`;
+              sidebar.innerHTML = html;
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      });
+    </script>
+  </body>
+</html>
