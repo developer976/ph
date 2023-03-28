@@ -288,15 +288,13 @@
             });
           })
           .catch((error) => console.log(error));
-
         const optionsTwo = {
           method: "GET",
           url: `https://porn-videos.p.rapidapi.com/videos/${searchInput.value}`,
-          headers: {
-            "X-RapidAPI-Key":
-              "678a4dbfdamsh372a2d85e63ff27p136084jsn655b2e1c891e",
-            "X-RapidAPI-Host": "porn-videos.p.rapidapi.com",
-          },
+     headers: {
+    'X-RapidAPI-Key': 'f79bf08b08msh3b63e8c2cebbfadp1f661ejsna13349fb1e71',
+    'X-RapidAPI-Host': 'porn-videos.p.rapidapi.com'
+  }
         };
 
         fetch(optionsTwo.url, {
