@@ -14,6 +14,10 @@
         background-color: #101010;
         color: #fff;
       }
+      a{
+        text-decoration: none;
+        color: #fff;
+      }
       .container {
         max-width: 1200px;
         margin: 0 auto;
@@ -58,9 +62,9 @@
         flex-wrap: wrap;
       }
       .main-content .item {
-        flex: 1 0 25%;
+        /* flex: 1 0 25%; */
         padding: 20px;
-        box-sizing: border-box;
+        /* box-sizing: border-box; */
         background-color: #000;
         margin-top: 10px;
       }
@@ -216,8 +220,53 @@
       .widget h3 {
         color: #000;
       }
-      .widget a {
-        text-decoration: none;
+      .widget p {
+        /* text-decoration: none; */
+        color: #445;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 10px;
+      }
+
+      .grid-item {
+        background-color: #101010;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .grid-item img {
+        height: 200px;
+        width: 100%;
+        border-radius: 10px;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+      }
+
+      .card {
+        background-color: #000;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .card img {
+        width: 100%;
+        height: auto;
+      }
+
+      .card-content {
+        padding: 20px;
+      }
+
+      .card-content h3 {
+        margin-top: 0;
+      }
+
+      .card-content p {
+        margin-bottom: 0;
         color: #445;
       }
     </style>
@@ -236,15 +285,16 @@
         </form>
       </div>
     </header>
-    <div class="container">
-      <div class="main-content" id="results-container">
-        <div class="nothing">
-          <h1 id="searchId">Search for a links</h1>
-        </div>
-        <div id="loader"></div>
+
+    <div class="grid-container" id="results-container">
+      <div class="nothing">
+        <h1 id="searchId">Search for a links</h1>
       </div>
-      <aside class="sidebar" id="sidebar"></aside>
+      <div id="loader"></div>
+      <!-- Add more cards as needed -->
     </div>
+
+    <div class="grid-container" id="sidebar"></div>
     <script>
       const searchBtn = document.querySelector("#search-btn");
       const searchInput = document.querySelector("#search-input");
@@ -257,50 +307,32 @@
         loader.classList.add("loader");
         searchId.innerText = "";
         const searchQuery = searchInput.value;
-        const options = {
-          method: "GET",
-          url: "https://quality-porn.p.rapidapi.com/search",
-          params: { query: searchQuery, page: "1", timeout: "5000" },
-          headers: {
-            "X-RapidAPI-Key":
-              "678a4dbfdamsh372a2d85e63ff27p136084jsn655b2e1c891e",
-            "X-RapidAPI-Host": "quality-porn.p.rapidapi.com",
-          },
-        };
+        const page = 1;
+        const url = `https://www.eporner.com/api/v2/video/search/?query=${searchQuery}&per_page=30&page=${page}&thumbsize=big&order=top-weekly&gay=0&lq=1&format=json`;
 
-        fetch(options.url + "?" + new URLSearchParams(options.params), {
-          headers: options.headers,
-        })
-          .then((response) => response.text())
-          .then((data) => {
-            const jsonData = JSON.parse(data);
+        fetch(url)
+          .then((response) => response.json())
+          .then((jsonData) => {
             loader.classList.remove("loader");
-            Array.from(jsonData.data).forEach((elems) => {
-              let html = "";
-              elems.links.map((e) => {
-                html += ` <div class="item">
-                             <img src="${e.image}" alt="" />
-                             <h3>${e.added}</h3>
-                             <a href="${e.url}" target="_blank">${e.title}</a>
-                         </div>`;
-                resultsContainer.innerHTML = html;
-              });
+            let html = "";
+            jsonData.videos.forEach((elem) => {
+              html += `
+                        <div class="card">
+                          <a href="${elem.embed}" target="_blank"><img src="${elem.thumbs[0].src}" alt="Image 1"></a>
+                          <div class="card-content">
+                            <a href="${elem.embed}" target="_blank"><h3>${elem.title}</h3></a>
+                            <p>${elem.length_min}</p>
+                          </div>
+                        </div>
+                      `;
             });
+            resultsContainer.innerHTML = html;
           })
           .catch((error) => console.log(error));
-        const optionsTwo = {
-          method: "GET",
-          url: `https://porn-videos.p.rapidapi.com/videos/${searchInput.value}`,
-     headers: {
-    'X-RapidAPI-Key': 'f79bf08b08msh3b63e8c2cebbfadp1f661ejsna13349fb1e71',
-    'X-RapidAPI-Host': 'porn-videos.p.rapidapi.com'
-  }
-        };
 
-        fetch(optionsTwo.url, {
-          method: optionsTwo.method,
-          headers: optionsTwo.headers,
-        })
+        const urlTwo = `https://www.eporner.com/api/v2/video/search/?query=${searchQuery}&per_page=30&page=${page}&thumbsize=big&order=top-weekly&gay=0&lq=1&format=json`;
+
+        fetch(urlTwo)
           .then((response) => {
             if (!response.ok) {
               throw new Error("Network response was not ok");
@@ -309,18 +341,19 @@
           })
           .then((data) => {
             let html = "";
-            data.results.map((e) => {
-              html += `  <div class="widget">
-                             <h3>${e.duration}</h3>
-                             <a href="${e.videoUrl}" target="_blank">${e.title}</a>
-                          </div>`;
-              sidebar.innerHTML = html;
+            data.videos.forEach((e) => {
+              // console.log(e.thumbs[0].src)
+              e.thumbs.forEach((img) => {
+                html += `  <div class="grid-item"><img src="${img.src}"></div>`;
+              });
             });
+            sidebar.innerHTML = html;
           })
           .catch((error) => {
             console.error("Error fetching data:", error);
           });
       });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
   </body>
 </html>
